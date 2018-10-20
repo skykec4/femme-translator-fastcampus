@@ -1,22 +1,51 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>팜므어 번역기</title>
+    <title>Document</title>
 </head>
+
 <body>
     <div>
-        <h1>팜므어 번역기</h1>
+        <h1>팜므어 번역기 김응천</h1>
         <textarea name="" id="" cols="30" rows="10"></textarea>
-        <button>번역</button>
-        <div class="result"></div>
+        <button id='translate'>번역</button>
+        <div class="result">
+        </div>
     </div>
+
     <script src="./hangul.js"></script>
     <script>
-        console.log("하이하이")
+
+        function textareaCheck() {
+            var textareaValue = document.querySelector('textarea').value;
+            var textArr = textareaValue.split('');
+            var chgvalue = textArr.map(function (data) {
+                var disassemble = Hangul.disassemble(data);
+
+                var islen = disassemble.length === 4
+                var ismoem = Hangul.isVowel(disassemble[1]) && Hangul.isVowel(disassemble[2])
+
+                if (islen && ismoem) {
+                    var tmp = disassemble[3]
+                    disassemble[3] = disassemble[2]
+                    disassemble[2] = tmp;
+                }
+                return Hangul.assemble(disassemble)
+
+            })
+            return chgvalue.join('');
+        }
+
+
+        document.querySelector('#translate').addEventListener('click', function () {
+            document.querySelector('.result').innerText = textareaCheck();
+
+        })
     </script>
-    
 </body>
+
 </html>
